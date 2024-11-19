@@ -24,15 +24,31 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         data = json.loads(text_data)
-        sender_id = data['sender_id']
-        content = data['content']
+        sender_id = data.get('sender_id')
+        content = data.get('content')
+        recepient_id = data.get('recepient_id')
         
         sender = User.objects(user_id=sender_id).first()
-        conversation = Conversation.objects(id=self.conversation_id).first()
-        
-        if not sender or not conversation:
+        if not sender:
+            await self.send(text_data=json.dumps({'error': 'Invalid sender'}))
             return
         
+        # check if conversation exists
+        conversation = Conversation.objects(id=self.conversation_id).first()
+        if not conversation:
+            # Initiate a new conversation if recepient_id is there
+            recepient = User.objects(user_id=recepient_id).first()
+            if not recepient:
+                await self.send(text_data=json.dumps({'error': 'Invalid recepient'}))
+                return
+            
+            conversation = Conversation(
+                participants = [sender, recepient]
+            )
+            conversation.save()
+            self.conversation_id = str(conversation.id)
+        
+
         # Save message to the db
         message = Message(
             conversation = conversation,

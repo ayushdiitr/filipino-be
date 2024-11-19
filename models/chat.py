@@ -6,6 +6,11 @@ class Conversation(Document):
     participants = ListField(ReferenceField('User') , required=True)
     created_at = DateTimeField(default=timezone.now)
     
+    meta={
+        'collection':'conversations',
+        'indexes':['participants']
+    }
+    
     def __str__(self):
         participant_names = [str(user.id) for user in self.participants]
         return f"Conversation between {', '.join(participant_names)}"
@@ -18,6 +23,11 @@ class Message(Document):
     content = StringField(required=True)
     timestamp = DateTimeField(default=timezone.now)
     is_read = BooleanField(default=False)
+    
+    meta = {
+        'collection': 'messages',
+        'indexes': ['conversation']
+    }
     
     def __str__(self):
         return f"Message from {self.sender.id} at {self.timestamp}"
