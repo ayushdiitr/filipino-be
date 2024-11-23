@@ -86,11 +86,13 @@ ASGI_APPLICATION = 'core.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-connect(
-    db='filipino_db',
-    host='localhost',
-    port=27017,
-)
+# connect(
+#     db='filipino_db',
+#     host='localhost',
+#     port=27017,
+# )
+
+connect(host="mongodb+srv://ayushd175:MFnnsS12dn6q0zIu@filipino.d3con.mongodb.net/?retryWrites=true&w=majority&appName=filipino")
     
 DATABASES = {
     

@@ -1,0 +1,29 @@
+version: '3.9'
+services:
+  app:
+    build: .
+    container_name: django_app
+    command: gunicorn core.asgi:application -w 3 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - redis
+      - mongodb
+    environment:
+      - DJANGO_SETTINGS_MODULE=core.settings
+      - REDIS_URL=redis://redis:6379/0
+      - MONGO_URI=mongodb+srv://ayushd175:MFnnsS12dn6q0zIu@filipino.d3con.mongodb.net/?retryWrites=true&w=majority&appName=filipino
+
+  redis:
+    image: redis:6.2
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  mongodb:
+    image: mongo:5.0
+    container_name: mongodb
+    ports:
+      - "27017:27017"
