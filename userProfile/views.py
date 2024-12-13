@@ -8,7 +8,7 @@ from bson import ObjectId
 def swipe_user(request, user_id, action):
     try:
         # Replace with the authenticated user logic if applicable
-        user = User.objects.get(id=ObjectId('673911f75e57323b449d4385'))
+        user = User.objects.get(id=ObjectId('6741087d52587b9769e8da6d'))
         target_user = User.objects.get(id=ObjectId(user_id))
 
         # Ensure both users have profiles

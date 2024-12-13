@@ -9,10 +9,20 @@ class Profile(Document):
     matched_users = ListField(ReferenceField('User'))
     last_swipe_date = DateTimeField(default=timezone.now)
     
+    #profile attributes
+    work = StringField(max_length=100, default='')
+    education = StringField(max_length=100, default='')
+    location = StringField(max_length=100, default='')
+    looking_for = StringField(max_length=100, default='')
+    interests = ListField(StringField(max_length=30), default=[])
+    
     meta = {
         'collection':'profiles',
         'indexes':['user'],
     }
+    
+    def __str__(self):
+        return self.user
     
     def like_user(self, liked_user):
         if liked_user not in self.liked_users and liked_user not in self.disliked_users:

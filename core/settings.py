@@ -32,7 +32,7 @@ SECRET_KEY = 'django-insecure-+ttnerhcyi1$mao(wezt0-m21wr_ym@r7+09@04%q%w3)c9fk1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['35.154.234.237','localhost','127.0.0.1']
+ALLOWED_HOSTS = ['35.154.234.237','localhost','127.0.0.1','10.0.2.2']
 
 
 # Application definition
@@ -104,7 +104,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [('127.0.0.1', 6379)],
+            "hosts": [("redis", 6379)],  # Use 'redis' service name from Docker Compose
         },
     },
 }
@@ -127,6 +127,21 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'ERROR',
+    },
+}
+
 
 
 # Internationalization
